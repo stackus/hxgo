@@ -41,6 +41,8 @@ func myHandler(w http.ResponseWriter, r *http.Request) {
 ```
 
 ## Installation
+The minimum version of Go required is **1.18**. Generics have been used to make some types and options easier to work with.
+
 Install using `go get`:
 ```bash
 go get github.com/stackus/htmx
@@ -249,6 +251,7 @@ func MyHandler(w http.ResponseWriter, r *http.Request) {
 ## Usage with different HTTP frameworks
 With the standard library, and other frameworks that adhere to its `http.ResponseWriter` interface, the `Response` function can be used directly to modify the response.
 
+### Standard Library (and some like Chi)
 ```go
 package main
 
@@ -285,7 +288,7 @@ func main() {
 ```
 
 ### Echo, Fiber, and other frameworks
-For frameworks that do not use the standard library's `http.ResponseWriter` interface, the `BuildResponse` function can be used to build the HTMX response. You may then apply the headers and status code to the response as needed.
+For frameworks that do not use the standard library's `http.ResponseWriter` interface, there are request and response helpers available to make it easier to work with HTMX.
 
 For example, with [Echo](https://echo.labstack.com/):
 
@@ -296,6 +299,7 @@ import (
 	"github.com/labstack/echo/v4"
 
 	"github.com/stackus/htmx"
+	"github.com/stackus/htmx/htmxecho"
 )
 
 func main() {
@@ -304,27 +308,33 @@ func main() {
 
 	// Define a route for "/"
 	e.GET("/", func(c echo.Context) error {
-		// Add HTMX headers and a status code to the response
-		r, err := htmx.BuildResponse(
-			htmx.Location("/foo"),
-			htmx.StatusStopPolling,
-		)
-		if err != nil {
-			return err
-		}
-		
-		for k, v := range r.Headers() {
-			c.Response().Header().Set(k, v)
-		}
+		// use echohtmx.IsHtmx to determine if the request is an HTMX request
+		if echohtmx.IsHtmx(c) {
+			// do something
+			// Adds HTMX headers but does not set the Status Code
+			r, err := echohtmx.Response(c,
+				// Continue to use the base htmx types and options
+				htmx.Location("/foo"),
+				htmx.StatusStopPolling,
+			)
+			if err != nil {
+				return err
+			}
 
-		// Set the HTMX status code here and response body
-		return c.String(r.StatusCode(), "Hello Echo")
+			// Set the HTMX status code here and response body
+			return c.String(r.StatusCode(), "Hello Echo")
+		}
 	})
 
 	// Start the server on port 8080
 	e.Logger.Fatal(e.Start(":8080"))
 }
 ```
+
+You will find request and response helpers for the following frameworks:
+- Echo: [echohtmx](./echohtmx)
+- Fiber: [fiberhtmx](./fiberhtmx)
+- Gin: [ginhtmx](./ginhtmx)
 
 The `BuildResponse` will return a default status of 200 if no status is set. If you need to set a status code, you can use the `Status` option.
 
