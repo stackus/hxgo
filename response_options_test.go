@@ -10,7 +10,7 @@ func TestPushUrl(t *testing.T) {
 	t.Parallel()
 
 	tests := map[string]struct {
-		options responseOption
+		options ResponseOption
 		want    map[string]string
 	}{
 		"Set new path": {
@@ -34,7 +34,7 @@ func TestRedirect(t *testing.T) {
 	t.Parallel()
 
 	tests := map[string]struct {
-		options responseOption
+		options ResponseOption
 		want    map[string]string
 	}{
 		"Set redirect path": {
@@ -58,7 +58,7 @@ func TestRefresh(t *testing.T) {
 	t.Parallel()
 
 	tests := map[string]struct {
-		options responseOption
+		options ResponseOption
 		want    map[string]string
 	}{
 		"Set refresh": {
@@ -82,7 +82,7 @@ func TestReplaceUrl(t *testing.T) {
 	t.Parallel()
 
 	tests := map[string]struct {
-		options responseOption
+		options ResponseOption
 		want    map[string]string
 	}{
 		"Set replacement path": {
@@ -106,7 +106,7 @@ func TestReselect(t *testing.T) {
 	t.Parallel()
 
 	tests := map[string]struct {
-		options responseOption
+		options ResponseOption
 		want    map[string]string
 	}{
 		"Set new select target": {
@@ -130,7 +130,7 @@ func TestRetarget(t *testing.T) {
 	t.Parallel()
 
 	tests := map[string]struct {
-		options responseOption
+		options ResponseOption
 		want    map[string]string
 	}{
 		"Set new target": {
@@ -154,7 +154,7 @@ func TestStatus(t *testing.T) {
 	t.Parallel()
 
 	tests := map[string]struct {
-		options responseOption
+		options ResponseOption
 		want    int
 	}{
 		"Set status": {

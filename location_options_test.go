@@ -10,7 +10,7 @@ func TestLocation(t *testing.T) {
 	t.Parallel()
 
 	tests := map[string]struct {
-		location responseOption
+		location ResponseOption
 		want     map[string]string
 	}{
 		"Set path": {

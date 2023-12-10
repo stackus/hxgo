@@ -11,7 +11,7 @@ func TestTrigger(t *testing.T) {
 	t.Parallel()
 
 	tests := map[string]struct {
-		trigger responseOption
+		trigger ResponseOption
 		want    map[string]any
 	}{
 		"Set named event": {
@@ -104,7 +104,7 @@ func TestTriggerAfterSettle(t *testing.T) {
 	t.Parallel()
 
 	tests := map[string]struct {
-		trigger responseOption
+		trigger ResponseOption
 		want    map[string]any
 	}{
 		"Set named event": {
@@ -197,7 +197,7 @@ func TestTriggerAfterSwap(t *testing.T) {
 	t.Parallel()
 
 	tests := map[string]struct {
-		trigger responseOption
+		trigger ResponseOption
 		want    map[string]any
 	}{
 		"Set named event": {

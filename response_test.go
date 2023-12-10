@@ -13,7 +13,7 @@ func TestResponse(t *testing.T) {
 	t.Parallel()
 
 	type args struct {
-		options []responseOption
+		options []ResponseOption
 	}
 	tests := map[string]struct {
 		args        args
@@ -23,7 +23,7 @@ func TestResponse(t *testing.T) {
 	}{
 		"Set status": {
 			args: args{
-				options: []responseOption{
+				options: []ResponseOption{
 					Status(http.StatusAccepted),
 				},
 			},
@@ -32,7 +32,7 @@ func TestResponse(t *testing.T) {
 		},
 		"Set stop polling": {
 			args: args{
-				options: []responseOption{
+				options: []ResponseOption{
 					StatusStopPolling,
 				},
 			},
@@ -41,7 +41,7 @@ func TestResponse(t *testing.T) {
 		},
 		"Set headers": {
 			args: args{
-				options: []responseOption{
+				options: []ResponseOption{
 					Location("/foo"),
 					SwapOuterHtml.FocusScroll(true),
 				},
@@ -54,7 +54,7 @@ func TestResponse(t *testing.T) {
 		},
 		"Overwrite headers": {
 			args: args{
-				options: []responseOption{
+				options: []ResponseOption{
 					Location("/foo"),
 					SwapOuterHtml.FocusScroll(true),
 					Location("/bar"),
@@ -68,7 +68,7 @@ func TestResponse(t *testing.T) {
 		},
 		"Set status and headers": {
 			args: args{
-				options: []responseOption{
+				options: []ResponseOption{
 					Status(http.StatusAccepted),
 					Location("/foo"),
 					SwapOuterHtml.FocusScroll(false),
@@ -82,7 +82,7 @@ func TestResponse(t *testing.T) {
 		},
 		"Panics and recovers": {
 			args: args{
-				options: []responseOption{
+				options: []ResponseOption{
 					Location("/foo"),
 					Trigger(func() map[string]any {
 						panic(fmt.Errorf("bad event data"))

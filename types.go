@@ -55,7 +55,8 @@ func (r HtmxResponse) StatusCode() int {
 	return r.status
 }
 
-type responseOption interface {
+// ResponseOption is an interface that can be used to set the headers and status code of the response
+type ResponseOption interface {
 	apply(*HtmxResponse)
 }
 

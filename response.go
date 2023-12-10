@@ -92,8 +92,11 @@ const (
 //   - Trigger(...events): Triggers client-side events.
 //   - TriggerAfterSettle(...events): Triggers client-side events after the settle step.
 //   - TriggerAfterSwap(...events): Triggers client-side events after the swap step.
-func Response(w http.ResponseWriter, options ...responseOption) (err error) {
+func Response(w http.ResponseWriter, options ...ResponseOption) error {
 	o, err := BuildResponse(options...)
+	if err != nil {
+		return err
+	}
 
 	if len(o.headers) > 0 {
 		for k, v := range o.headers {
@@ -106,10 +109,18 @@ func Response(w http.ResponseWriter, options ...responseOption) (err error) {
 		w.WriteHeader(o.status)
 	}
 
-	return
+	return nil
 }
 
-func BuildResponse(options ...responseOption) (response HtmxResponse, err error) {
+// BuildResponse creates a new HtmxResponse from the provided options.
+//
+// It can be used to create a response helper for your own HTTP library.
+//
+// Several libraries have already been implemented:
+//   - Echo: import github.com/stackus/htmx/echohtmx
+//   - Fiber: import github.com/stackus/htmx/fiberhtmx
+//   - Gin: import github.com/stackus/htmx/ginhtmx
+func BuildResponse(options ...ResponseOption) (response *HtmxResponse, err error) {
 	// Recover from any panics that might happen during the processing of the options.
 	defer func() {
 		if r := recover(); r != nil {
@@ -117,11 +128,11 @@ func BuildResponse(options ...responseOption) (response HtmxResponse, err error)
 		}
 	}()
 
-	o := HtmxResponse{
+	o := &HtmxResponse{
 		headers: make(map[string]string),
 	}
 	for _, option := range options {
-		option.apply(&o)
+		option.apply(o)
 	}
 
 	return o, nil
