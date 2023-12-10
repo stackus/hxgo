@@ -1,7 +1,11 @@
+![golangish-htmxish-logo.png](golangish-htmxish-logo.png)
+
 # HTMX library for Go
 [![GoDoc](https://godoc.org/github.com/stackus/htmx?status.svg)](https://godoc.org/github.com/stackus/htmx)
 
 This comprehensive library offers an array of functions and types specifically designed to streamline the handling of [HTMX](https://htmx.org/) requests and the construction of responses in the Go applications.
+
+> README.md logo image courtesy of ChatGPT.
 
 ## Features
 - Request and Response header helpers
@@ -185,10 +189,10 @@ func MyHandler(w http.ResponseWriter, r *http.Request) {
 Setting a complex event:
 ```go
 func MyHandler(w http.ResponseWriter, r *http.Request) {
-	  myEvent := map[string]any{
+    myEvent := map[string]any{
         "foo": "bar",
         "baz": 123,
-	  }
+    }
 
     htmx.Response(w, htmx.Trigger(htmx.Event("my-event", myEvent)))
 	  // Hx-Trigger: {"my-event":{"foo":"bar","baz":123}}
