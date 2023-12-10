@@ -223,7 +223,7 @@ func TestIsBoosted(t *testing.T) {
 	}
 }
 
-func TestIsHTMX(t *testing.T) {
+func TestIsHtmx(t *testing.T) {
 	t.Parallel()
 
 	type args struct {
@@ -254,7 +254,7 @@ func TestIsHTMX(t *testing.T) {
 	}
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
-			assert.Equalf(t, tt.want, IsHTMX(tt.args.r), "Headers: %v", tt.args.r.Header)
+			assert.Equalf(t, tt.want, IsHtmx(tt.args.r), "Headers: %v", tt.args.r.Header)
 		})
 	}
 }

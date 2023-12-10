@@ -95,10 +95,10 @@ func IsRequest(r *http.Request) bool {
 	return r.Header.Get(HxRequest) != ""
 }
 
-// IsHTMX determines if an HTTP request is an HTMX request.
+// IsHtmx determines if an HTTP request is an HTMX request.
 //
 // Does the same thing as IsRequest, only with a more user-friendly name.
-func IsHTMX(r *http.Request) bool {
+func IsHtmx(r *http.Request) bool {
 	return IsRequest(r)
 }
 
