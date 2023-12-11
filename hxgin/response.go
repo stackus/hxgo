@@ -1,12 +1,15 @@
-package fiberhtmx
+package hxgin
 
 import (
-	"github.com/gofiber/fiber/v2"
+	"github.com/gin-gonic/gin"
 
-	"github.com/stackus/htmx"
+	"github.com/stackus/hxgo"
 )
 
-// Response modifies the fiber.Ctx to add HTMX headers and status codes.
+// Response modifies the gin.Context to add HTMX headers and status codes.
+//
+// This will set the HTMX headers but will not set the Status Code. Use the
+// returned response to set the Status Code later with `response.StatusCode()`.
 //
 // The following options are available:
 //   - Status(int) | StatusStopPolling: Sets the HTTP status code of the HTMX response.
@@ -21,19 +24,17 @@ import (
 //   - Trigger(...events): Triggers client-side events.
 //   - TriggerAfterSettle(...events): Triggers client-side events after the settle step.
 //   - TriggerAfterSwap(...events): Triggers client-side events after the swap step.
-func Response(ctx *fiber.Ctx, options ...htmx.ResponseOption) (*htmx.HtmxResponse, error) {
-	r, err := htmx.BuildResponse(options...)
+func Response(ctx *gin.Context, options ...hx.ResponseOption) (*hx.HtmxResponse, error) {
+	r, err := hx.BuildResponse(options...)
 	if err != nil {
 		return nil, err
 	}
 
 	for k, v := range r.Headers() {
-		ctx.Set(k, v)
+		ctx.Header(k, v)
 	}
 
-	if r.StatusCode() != 0 {
-		ctx.Status(r.StatusCode())
-	}
+	// Skip setting the Status Code for Gin to avoid superfluous write errors
 
 	return r, nil
 }

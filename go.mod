@@ -1,4 +1,4 @@
-module github.com/stackus/htmx
+module github.com/stackus/hxgo
 
 go 1.21
 

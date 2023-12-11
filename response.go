@@ -1,4 +1,4 @@
-package htmx
+package hx
 
 import (
 	"net/http"
@@ -117,9 +117,9 @@ func Response(w http.ResponseWriter, options ...ResponseOption) error {
 // It can be used to create a response helper for your own HTTP library.
 //
 // Several libraries have already been implemented:
-//   - Echo: import github.com/stackus/htmx/echohtmx
-//   - Fiber: import github.com/stackus/htmx/fiberhtmx
-//   - Gin: import github.com/stackus/htmx/ginhtmx
+//   - Echo: import github.com/stackus/hxgo/hxecho
+//   - Fiber: import github.com/stackus/hxgo/hxfiber
+//   - Gin: import github.com/stackus/hxgo/hxgin
 func BuildResponse(options ...ResponseOption) (response *HtmxResponse, err error) {
 	// Recover from any panics that might happen during the processing of the options.
 	defer func() {

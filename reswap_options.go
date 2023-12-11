@@ -1,4 +1,4 @@
-package htmx
+package hx
 
 import (
 	"fmt"
@@ -24,17 +24,17 @@ import (
 //
 // Simple usage:
 //
-//	htmx.Response(w, htmx.Reswap("innerHTML"))
+//	hx.Response(w, hx.Reswap("innerHTML"))
 //	// Sets HX-Reswap header to "innerHTML"
 //
 // Constant usage example (same as above):
 //
-//	htmx.Response(w, htmx.SwapInnerHtml)
+//	hx.Response(w, hx.SwapInnerHtml)
 //	// Also sets HX-Reswap header to "innerHTML"
 //
 // Constant usage example (with modifiers):
 //
-//	htmx.Response(w, htmx.SwapInnerHtml.Swap(1*time.Second).Settle(2*time.Second))
+//	hx.Response(w, hx.SwapInnerHtml.Swap(1*time.Second).Settle(2*time.Second))
 //	// Sets HX-Reswap header to "innerHTML swap:1s settle:2s"
 type Reswap string
 
@@ -66,7 +66,7 @@ const (
 //
 // Example usage:
 //
-//	htmx.Response(w, htmx.SwapInnerHtml.Transition())
+//	hx.Response(w, hx.SwapInnerHtml.Transition())
 //	// Sets HX-Reswap header to "innerHTML transition:true"
 func (s Reswap) Transition() Reswap {
 	return Reswap(string(s) + " transition:true")
@@ -78,7 +78,7 @@ func (s Reswap) Transition() Reswap {
 //
 // Example usage:
 //
-//	htmx.Response(w, htmx.SwapInnerHtml.Swap(1*time.Second))
+//	hx.Response(w, hx.SwapInnerHtml.Swap(1*time.Second))
 //	// Sets HX-Reswap header to "innerHTML swap:1s"
 func (s Reswap) Swap(dur time.Duration) Reswap {
 	return Reswap(fmt.Sprintf("%s swap:%s", s, dur))
@@ -90,7 +90,7 @@ func (s Reswap) Swap(dur time.Duration) Reswap {
 //
 // Example usage:
 //
-//	htmx.Response(w, htmx.SwapInnerHtml.Settle(1*time.Second))
+//	hx.Response(w, hx.SwapInnerHtml.Settle(1*time.Second))
 //	// Sets HX-Reswap header to "innerHTML settle:1s"
 func (s Reswap) Settle(dur time.Duration) Reswap {
 	return Reswap(fmt.Sprintf("%s settle:%s", s, dur))
@@ -102,7 +102,7 @@ func (s Reswap) Settle(dur time.Duration) Reswap {
 //
 // Example usage:
 //
-//	htmx.Response(w, htmx.SwapInnerHtml.IgnoreTitle())
+//	hx.Response(w, hx.SwapInnerHtml.IgnoreTitle())
 //	// Sets HX-Reswap header to "innerHTML ignoreTitle:true"
 func (s Reswap) IgnoreTitle() Reswap {
 	return Reswap(string(s) + " ignoreTitle:true")
@@ -114,9 +114,9 @@ func (s Reswap) IgnoreTitle() Reswap {
 //
 // Example usage:
 //
-//	htmx.Response(w, htmx.SwapInnerHtml.Scroll("top"))
+//	hx.Response(w, hx.SwapInnerHtml.Scroll("top"))
 //	// Sets HX-Reswap header to "innerHTML scroll:top"
-//	htmx.Response(w, htmx.SwapInnerHtml.Scroll("#another-div:top"))
+//	hx.Response(w, hx.SwapInnerHtml.Scroll("#another-div:top"))
 //	// Sets HX-Reswap header to "innerHTML scroll:#another-div:top"
 func (s Reswap) Scroll(target string) Reswap {
 	return Reswap(fmt.Sprintf("%s scroll:%s", s, target))
@@ -128,9 +128,9 @@ func (s Reswap) Scroll(target string) Reswap {
 //
 // Example usage:
 //
-//	htmx.Response(w, htmx.SwapInnerHtml.Show("top"))
+//	hx.Response(w, hx.SwapInnerHtml.Show("top"))
 //	// Sets HX-Reswap header to "innerHTML show:top"
-//	htmx.Response(w, htmx.SwapInnerHtml.Show("#another-div:top"))
+//	hx.Response(w, hx.SwapInnerHtml.Show("#another-div:top"))
 //	// Sets HX-Reswap header to "innerHTML show:#another-div:top"
 func (s Reswap) Show(target string) Reswap {
 	return Reswap(fmt.Sprintf("%s show:%s", s, target))
@@ -142,7 +142,7 @@ func (s Reswap) Show(target string) Reswap {
 //
 // Example usage:
 //
-//	htmx.Response(w, htmx.SwapInnerHtml.FocusScroll(true))
+//	hx.Response(w, hx.SwapInnerHtml.FocusScroll(true))
 //	// Sets HX-Reswap header to "innerHTML focus-scroll:true"
 func (s Reswap) FocusScroll(focus bool) Reswap {
 	return Reswap(fmt.Sprintf("%s focus-scroll:%t", s, focus))

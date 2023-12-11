@@ -1,12 +1,12 @@
-package ginhtmx
+package hxecho
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/labstack/echo/v4"
 
-	"github.com/stackus/htmx"
+	"github.com/stackus/hxgo"
 )
 
-// Response modifies the gin.Context to add HTMX headers and status codes.
+// Response modifies the echo.Context to add HTMX headers and status codes.
 //
 // This will set the HTMX headers but will not set the Status Code. Use the
 // returned response to set the Status Code later with `response.StatusCode()`.
@@ -24,17 +24,17 @@ import (
 //   - Trigger(...events): Triggers client-side events.
 //   - TriggerAfterSettle(...events): Triggers client-side events after the settle step.
 //   - TriggerAfterSwap(...events): Triggers client-side events after the swap step.
-func Response(ctx *gin.Context, options ...htmx.ResponseOption) (*htmx.HtmxResponse, error) {
-	r, err := htmx.BuildResponse(options...)
+func Response(ctx echo.Context, options ...hx.ResponseOption) (*hx.HtmxResponse, error) {
+	r, err := hx.BuildResponse(options...)
 	if err != nil {
 		return nil, err
 	}
 
 	for k, v := range r.Headers() {
-		ctx.Header(k, v)
+		ctx.Response().Header().Set(k, v)
 	}
 
-	// Skip setting the Status Code for Gin to avoid superfluous write errors
+	// Skip setting the Status Code for Echo to avoid superfluous write errors
 
 	return r, nil
 }

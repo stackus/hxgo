@@ -1,4 +1,4 @@
-package htmx
+package hx
 
 // Request & Response Headers
 const (
@@ -21,19 +21,19 @@ const (
 //
 // Simple example:
 //
-//	htmx.Response(w, htmx.Trigger(htmx.Event("myEvent")))
+//	hx.Response(w, hx.Trigger(hx.Event("myEvent")))
 //	// Sets HX-Trigger header to {"myEvent":null}
 //
 // Example with data:
 //
-//	htmx.Response(w, htmx.Trigger(htmx.Event("myEvent", "myData")))
+//	hx.Response(w, hx.Trigger(hx.Event("myEvent", "myData")))
 //	// Sets HX-Trigger header to {"myEvent":"myData"}
 //
 // Example with multiple events:
 //
-//	htmx.Response(w, htmx.Trigger(
-//		htmx.Event("myEvent", "myData"),
-//		htmx.Event("myOtherEvent", "myOtherData"),
+//	hx.Response(w, hx.Trigger(
+//		hx.Event("myEvent", "myData"),
+//		hx.Event("myOtherEvent", "myOtherData"),
 //	))
 //	// Sets HX-Trigger header to {"myEvent":"myData","myOtherEvent":"myOtherData"}
 //
@@ -73,22 +73,22 @@ func TriggerAfterSwap(events ...event) responseOptionFunc {
 //
 // Simple named event:
 //
-//	htmx.Event("myEvent")
+//	hx.Event("myEvent")
 //	// Returns {"myEvent":null}
 //
 // Named event with string data:
 //
-//	htmx.Event("myEvent", "myData")
+//	hx.Event("myEvent", "myData")
 //	// Returns {"myEvent":"myData"}
 //
 // Named event with multiple data items (treated like an array):
 //
-//	htmx.Event("myEvent", "myData1", "myData2")
+//	hx.Event("myEvent", "myData1", "myData2")
 //	// Returns {"myEvent":["myData1","myData2"]}
 //
 // Named event with a struct or map (treated like an object):
 //
-//	htmx.Event("myEvent", map[string]string{"myKey": "myValue"})
+//	hx.Event("myEvent", map[string]string{"myKey": "myValue"})
 //	// Returns {"myEvent":{"myKey":"myValue"}}
 func Event(name string, data ...any) event {
 	return func() map[string]any {

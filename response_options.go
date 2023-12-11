@@ -1,10 +1,10 @@
-package htmx
+package hx
 
 // Status is used to set the HTTP status code of the HTMX response.
 //
 // Example usage:
 //
-//	htmx.Response(w, htmx.Status(http.StatusGone))
+//	hx.Response(w, hx.Status(http.StatusGone))
 //	// Sets the HTTP status code to 410.
 type Status int
 
@@ -15,7 +15,7 @@ const (
 	// StatusStopPolling sends HTTP status code 286 to the client to stop polling.
 	//
 	// Example usage:
-	//  htmx.Response(w, htmx.StatusStopPolling)
+	//  hx.Response(w, hx.StatusStopPolling)
 	//  // Sets the HTTP status code to 286.
 	StatusStopPolling Status = 286
 )
@@ -26,7 +26,7 @@ const (
 //
 // Example usage:
 //
-//	htmx.Response(w, htmx.PushUrl("/new-url-location"))
+//	hx.Response(w, hx.PushUrl("/new-url-location"))
 //	// Sets the HX-Push-Url header to "/new-url-location".
 type PushUrl string
 
@@ -38,7 +38,7 @@ func (p PushUrl) apply(o *HtmxResponse) { o.headers[HxPushUrl] = string(p) }
 //
 // Example usage:
 //
-//	htmx.Response(w, htmx.Redirect("/new-url-location"))
+//	hx.Response(w, hx.Redirect("/new-url-location"))
 //	// Sets the HX-Redirect header to "/new-url-location".
 type Redirect string
 
@@ -51,7 +51,7 @@ func (r Redirect) apply(o *HtmxResponse) { o.headers[HxRedirect] = string(r) }
 //
 // Example usage:
 //
-//	htmx.Response(w, htmx.Refresh())
+//	hx.Response(w, hx.Refresh())
 //	// Sets the HX-Refresh header to "true".
 func Refresh() responseOptionFunc {
 	return func(o *HtmxResponse) {
@@ -65,7 +65,7 @@ func Refresh() responseOptionFunc {
 //
 // Example usage:
 //
-//	htmx.Response(w, htmx.ReplaceUrl("/new-url-location"))
+//	hx.Response(w, hx.ReplaceUrl("/new-url-location"))
 //	// Sets the HX-Replace-Url header to "/new-url-location".
 type ReplaceUrl string
 
@@ -77,7 +77,7 @@ func (r ReplaceUrl) apply(o *HtmxResponse) { o.headers[HxReplaceUrl] = string(r)
 //
 // Example usage:
 //
-//	htmx.Response(w, htmx.Retarget("#new-target"))
+//	hx.Response(w, hx.Retarget("#new-target"))
 //	// Sets the HX-Retarget header to "#new-target".
 type Retarget string
 
@@ -89,7 +89,7 @@ func (t Retarget) apply(o *HtmxResponse) { o.headers[HxRetarget] = string(t) }
 //
 // Example usage:
 //
-//	htmx.Response(w, htmx.Reselect("#new-target"))
+//	hx.Response(w, hx.Reselect("#new-target"))
 //	// Sets the HX-Reselect header to "#new-target".
 type Reselect string
 

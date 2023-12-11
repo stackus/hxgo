@@ -1,4 +1,4 @@
-package htmx
+package hx
 
 import (
 	"net/http"

@@ -1,4 +1,4 @@
-package htmx
+package hx
 
 import (
 	"encoding/json"
@@ -14,13 +14,13 @@ import (
 //
 // Simple redirection example:
 //
-//	htmx.Response(w, htmx.Location("/test"))
+//	hx.Response(w, hx.Location("/test"))
 //	// Sets HX-Location header to "/test"
 //
 // Redirection with additional target example:
 //
-//	htmx.Response(w, htmx.Location("/test",
-//	  htmx.Target("#testdiv"),
+//	hx.Response(w, hx.Location("/test",
+//	  hx.Target("#testdiv"),
 //	))
 //	// Sets HX-Location header to a JSON object: {"path":"/test","target":"#testdiv"}
 func Location(path string, properties ...property) responseOptionFunc {

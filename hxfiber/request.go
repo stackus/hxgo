@@ -1,54 +1,54 @@
-package ginhtmx
+package hxfiber
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 
-	"github.com/stackus/htmx"
+	"github.com/stackus/hxgo"
 )
 
 // IsBoosted checks the HX-Boosted header
 //
 // Returns true if the request is a boosted request
-func IsBoosted(ctx *gin.Context) bool {
-	return ctx.GetHeader(htmx.HxBoosted) == "true"
+func IsBoosted(ctx *fiber.Ctx) bool {
+	return ctx.Get(hx.HxBoosted) == "true"
 }
 
 // GetCurrentUrl extracts the HX-Current-URL header from an HTTP request.
 //
 // It returns the current URL of the browser if the header exists.
 // If the header is not present, it returns an empty string.
-func GetCurrentUrl(ctx *gin.Context) string {
-	return ctx.GetHeader(htmx.HxCurrentUrl)
+func GetCurrentUrl(ctx *fiber.Ctx) string {
+	return ctx.Get(hx.HxCurrentUrl)
 }
 
 // IsHistoryRestoreRequest determines if an HTTP request is a history restore request.
 //
 // It checks the presence of the HX-History-Restore-Request header in the request.
 // Returns true if the header is present, otherwise returns false.
-func IsHistoryRestoreRequest(ctx *gin.Context) bool {
-	return ctx.GetHeader(htmx.HxHistoryRestoreRequest) != ""
+func IsHistoryRestoreRequest(ctx *fiber.Ctx) bool {
+	return ctx.Get(hx.HxHistoryRestoreRequest) != ""
 }
 
 // GetPrompt extracts the HX-Prompt header from an HTTP request.
 //
-// It returns the user response to an hx-prompt if the header exists.
+// It returns the user response to an Hx-Prompt if the header exists.
 // If the header is not present, it returns an empty string.
-func GetPrompt(ctx *gin.Context) string {
-	return ctx.GetHeader(htmx.HxPrompt)
+func GetPrompt(ctx *fiber.Ctx) string {
+	return ctx.Get(hx.HxPrompt)
 }
 
 // IsRequest determines if an HTTP request is an HTMX request.
 //
 // It checks the presence of the HX-Request header in the request.
 // Returns true if the header is present, otherwise returns false.
-func IsRequest(ctx *gin.Context) bool {
-	return ctx.GetHeader(htmx.HxRequest) != ""
+func IsRequest(ctx *fiber.Ctx) bool {
+	return ctx.Get(hx.HxRequest) != ""
 }
 
 // IsHtmx determines if an HTTP request is an HTMX request.
 //
 // Does the same thing as IsRequest, only with a more user-friendly name.
-func IsHtmx(ctx *gin.Context) bool {
+func IsHtmx(ctx *fiber.Ctx) bool {
 	return IsRequest(ctx)
 }
 
@@ -56,22 +56,22 @@ func IsHtmx(ctx *gin.Context) bool {
 //
 // It returns the ID of the target element if the header exists.
 // If the header is not present, it returns an empty string.
-func GetTarget(ctx *gin.Context) string {
-	return ctx.GetHeader(htmx.HxTarget)
+func GetTarget(ctx *fiber.Ctx) string {
+	return ctx.Get(hx.HxTarget)
 }
 
 // GetTriggerName extracts the HX-Trigger-Name header from an HTTP request.
 //
 // It returns the name of the triggered element if the header exists.
 // If the header is not present, it returns an empty string.
-func GetTriggerName(ctx *gin.Context) string {
-	return ctx.GetHeader(htmx.HxTriggerName)
+func GetTriggerName(ctx *fiber.Ctx) string {
+	return ctx.Get(hx.HxTriggerName)
 }
 
 // GetTrigger extracts the HX-Trigger header from an HTTP request.
 //
 // It returns the ID of the trigger element if the header exists.
 // If the header is not present, it returns an empty string.
-func GetTrigger(ctx *gin.Context) string {
-	return ctx.GetHeader(htmx.HxTrigger)
+func GetTrigger(ctx *fiber.Ctx) string {
+	return ctx.Get(hx.HxTrigger)
 }

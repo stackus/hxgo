@@ -1,15 +1,12 @@
-package echohtmx
+package hxfiber
 
 import (
-	"github.com/labstack/echo/v4"
+	"github.com/gofiber/fiber/v2"
 
-	"github.com/stackus/htmx"
+	"github.com/stackus/hxgo"
 )
 
-// Response modifies the echo.Context to add HTMX headers and status codes.
-//
-// This will set the HTMX headers but will not set the Status Code. Use the
-// returned response to set the Status Code later with `response.StatusCode()`.
+// Response modifies the fiber.Ctx to add HTMX headers and status codes.
 //
 // The following options are available:
 //   - Status(int) | StatusStopPolling: Sets the HTTP status code of the HTMX response.
@@ -24,17 +21,19 @@ import (
 //   - Trigger(...events): Triggers client-side events.
 //   - TriggerAfterSettle(...events): Triggers client-side events after the settle step.
 //   - TriggerAfterSwap(...events): Triggers client-side events after the swap step.
-func Response(ctx echo.Context, options ...htmx.ResponseOption) (*htmx.HtmxResponse, error) {
-	r, err := htmx.BuildResponse(options...)
+func Response(ctx *fiber.Ctx, options ...hx.ResponseOption) (*hx.HtmxResponse, error) {
+	r, err := hx.BuildResponse(options...)
 	if err != nil {
 		return nil, err
 	}
 
 	for k, v := range r.Headers() {
-		ctx.Response().Header().Set(k, v)
+		ctx.Set(k, v)
 	}
 
-	// Skip setting the Status Code for Echo to avoid superfluous write errors
+	if r.StatusCode() != 0 {
+		ctx.Status(r.StatusCode())
+	}
 
 	return r, nil
 }

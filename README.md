@@ -1,7 +1,7 @@
 ![golangish-htmxish-logo.png](golangish-htmxish-logo.png)
 
 # HTMX library for Go
-[![GoDoc](https://godoc.org/github.com/stackus/htmx?status.svg)](https://godoc.org/github.com/stackus/htmx)
+[![GoDoc](https://godoc.org/github.com/stackus/hxgo?status.svg)](https://godoc.org/github.com/stackus/hxgo)
 
 This comprehensive library offers an array of functions and types specifically designed to streamline the handling of [HTMX](https://htmx.org/) requests and the construction of responses in the Go applications.
 
@@ -12,22 +12,28 @@ This comprehensive library offers an array of functions and types specifically d
 - Easy APIs to build complex HTMX responses for Locations, Reswaps, and Triggers
 
 ```go
+import (
+    "net/http"
+    
+    "github.com/stackus/hxgo"
+)
+
 func myHandler(w http.ResponseWriter, r *http.Request) {
-    if htmx.IsHtmx(r) {
+    if hx.IsHtmx(r) {
         // do something
 		
         // load up on HTMX headers and set the status code to send back to the client
-        err := htmx.Response(w,
-            htmx.Location("/new-location",
-                htmx.Target("#my-target"),
-                htmx.Swap(htmx.SwapInnerHtml.IgnoreTitle()),
-                htmx.Values(map[string]string{"key": "value"}),
+        err := hx.Response(w,
+            hx.Location("/new-location",
+                hx.Target("#my-target"),
+                hx.Swap(hx.SwapInnerHtml.IgnoreTitle()),
+                hx.Values(map[string]string{"key": "value"}),
             ),
-            htmx.StatusStopPolling,
-            htmx.Trigger(
-                htmx.Event("my-event"),
-                htmx.Event("my-other-event", "my-other-event-value"),
-                htmx.Event("my-complex-event", map[string]any{
+            hx.StatusStopPolling,
+            hx.Trigger(
+                hx.Event("my-event"),
+                hx.Event("my-other-event", "my-other-event-value"),
+                hx.Event("my-complex-event", map[string]any{
                     "foo": "bar",
                     "baz": 123,
                 }
@@ -45,20 +51,22 @@ The minimum version of Go required is **1.18**. Generics have been used to make 
 
 Install using `go get`:
 ```bash
-go get github.com/stackus/htmx
+go get github.com/stackus/hxgo
 ```
 
 Then import the package into your project:
 ```go
-import "github.com/stackus/htmx"
+import "github.com/stackus/hxgo"
 ```
+
+You'll then use `hx.*` to access the functions and types.
 
 ## Working with Requests
 To determine if a request is an HTMX request, use the `IsHtmx` function:
 
 ```go
 func MyHandler(w http.ResponseWriter, r *http.Request) {
-    if htmx.IsHtmx(r) {
+    if hx.IsHtmx(r) {
         // do something
     }
 }
@@ -82,7 +90,7 @@ Use the `Response` function to modify the `http.ResponseWriter` to return an HTM
 
 ```go
 func MyHandler(w http.ResponseWriter, r *http.Request) {
-    err := htmx.Response(w, htmx.Retarget("/new-location"))
+    err := hx.Response(w, hx.Retarget("/new-location"))
 	if err != nil {
         // handle error
     }
@@ -119,17 +127,17 @@ The `Location` option is used to set the [HX-Location Response Header](https://h
 Setting just the path:
 ```go
 func MyHandler(w http.ResponseWriter, r *http.Request) {
-    htmx.Response(w, htmx.Location("/new-location"))
+    hx.Response(w, hx.Location("/new-location"))
 	  // Hx-Location: /new-location
 }
 ```
 Setting multiple properties:
 ```go
 func MyHandler(w http.ResponseWriter, r *http.Request) {
-    htmx.Response(w, htmx.Location("/new-location",
-        htmx.Target("#my-target"),
-        htmx.Swap(htmx.SwapInnerHtml.IgnoreTitle()),
-        htmx.Values(map[string]string{"key": "value"}),
+    hx.Response(w, hx.Location("/new-location",
+        hx.Target("#my-target"),
+        hx.Swap(hx.SwapInnerHtml.IgnoreTitle()),
+        hx.Values(map[string]string{"key": "value"}),
     ))
     // Hx-Location: {"path":"/new-location","target":"#my-target","swap":"innerHTML ignoreTitle:true","values":{"key":"value"}}
 }
@@ -160,9 +168,9 @@ The result from `Reswap` and each constant can be chained with modifiers to conf
 Setting just the reswap header two ways:
 ```go
 func MyHandler(w http.ResponseWriter, r *http.Request) {
-    htmx.Response(w, htmx.Reswap("innerHTML"))
+    hx.Response(w, hx.Reswap("innerHTML"))
     // Hx-Reswap: innerHTML
-    htmx.Response(w, htmx.SwapInnerHtml)
+    hx.Response(w, hx.SwapInnerHtml)
     // Hx-Reswap: innerHTML
 }
 ```
@@ -170,7 +178,7 @@ func MyHandler(w http.ResponseWriter, r *http.Request) {
 Setting the reswap header with modifiers:
 ```go
 func MyHandler(w http.ResponseWriter, r *http.Request) {
-    htmx.Response(w, htmx.SwapInnerHtml.IgnoreTitle().Transition())
+    hx.Response(w, hx.SwapInnerHtml.IgnoreTitle().Transition())
     // Hx-Reswap: innerHTML ignoreTitle:true transition:true
 }
 ```
@@ -178,12 +186,12 @@ func MyHandler(w http.ResponseWriter, r *http.Request) {
 ### Trigger
 The `Trigger` option is used to set the [HX-Trigger Response Header](https://htmx.org/headers/hx-trigger/). It takes a variable number of events to trigger on the client.
 
-Events are created using `htmx.Event` and can be either simple names or complex objects. The supported events include:
+Events are created using `hx.Event` and can be either simple names or complex objects. The supported events include:
 
 Setting a simple event:
 ```go
 func MyHandler(w http.ResponseWriter, r *http.Request) {
-    htmx.Response(w, htmx.Trigger(htmx.Event("my-event")))
+    hx.Response(w, hx.Trigger(hx.Event("my-event")))
     // Hx-Trigger: {"my-event":null}
 }
 ```
@@ -196,7 +204,7 @@ func MyHandler(w http.ResponseWriter, r *http.Request) {
         "baz": 123,
     }
 
-    htmx.Response(w, htmx.Trigger(htmx.Event("my-event", myEvent)))
+    hx.Response(w, hx.Trigger(hx.Event("my-event", myEvent)))
 	  // Hx-Trigger: {"my-event":{"foo":"bar","baz":123}}
 }
 ```
@@ -204,9 +212,9 @@ func MyHandler(w http.ResponseWriter, r *http.Request) {
 Setting multiple events:
 ```go
 func MyHandler(w http.ResponseWriter, r *http.Request) {
-    htmx.Response(w, htmx.Trigger(
-        htmx.Event("my-event"),
-        htmx.Event("my-other-event", "my-other-event-value"),
+    hx.Response(w, hx.Trigger(
+        hx.Event("my-event"),
+        hx.Event("my-other-event", "my-other-event-value"),
     ))
     // Hx-Trigger: {"my-event":null,"my-other-event":"my-other-event-value"}
 }
@@ -216,9 +224,9 @@ The `data`, which is the second parameter of the `Event`, is variadic. If more t
 
 ```go
 func MyHandler(w http.ResponseWriter, r *http.Request) {
-    htmx.Response(w, htmx.Trigger(
-        htmx.Event("my-event-1", "foo", "bar"),
-        htmx.Event("my-event-2", []string{"foo", "bar"}),
+    hx.Response(w, hx.Trigger(
+        hx.Event("my-event-1", "foo", "bar"),
+        hx.Event("my-event-2", []string{"foo", "bar"}),
     ))
     // Hx-Trigger: {"my-event-1":["foo","bar"], "my-event-2":["foo","bar"]}
 }
@@ -234,7 +242,7 @@ The `Status` option is used to set the HTTP status code of the response. There i
 Setting the status code:
 ```go
 func MyHandler(w http.ResponseWriter, r *http.Request) {
-    htmx.Response(w, htmx.StatusStopPolling)
+    hx.Response(w, hx.StatusStopPolling)
     // HTTP/1.1 286
 }
 ```
@@ -243,7 +251,7 @@ The `Status` option can be used to set any HTTP status code and is not limited t
 
 ```go
 func MyHandler(w http.ResponseWriter, r *http.Request) {
-    htmx.Response(w, htmx.Status(http.StatusGone))
+    hx.Response(w, hx.Status(http.StatusGone))
     // HTTP/1.1 410
 }
 ```
@@ -260,14 +268,14 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/stackus/htmx"
+	"github.com/stackus/hxgo"
 )
 
 func helloWorldHandler(w http.ResponseWriter, r *http.Request) {
 	// Add HTMX headers and a status code to the response
-	err := htmx.Response(w,
-		htmx.Location("/foo"),
-		htmx.StatusStopPolling,
+	err := hx.Response(w,
+		hx.Location("/foo"),
+		hx.StatusStopPolling,
 	)
 	if err != nil {
 		log.Fatal(err)
@@ -298,8 +306,8 @@ package main
 import (
 	"github.com/labstack/echo/v4"
 
-	"github.com/stackus/htmx"
-	"github.com/stackus/htmx/htmxecho"
+	"github.com/stackus/hxgo"
+	"github.com/stackus/hxgo/hxecho"
 )
 
 func main() {
@@ -308,14 +316,14 @@ func main() {
 
 	// Define a route for "/"
 	e.GET("/", func(c echo.Context) error {
-		// use echohtmx.IsHtmx to determine if the request is an HTMX request
-		if echohtmx.IsHtmx(c) {
+		// use hxecho.IsHtmx to determine if the request is an HTMX request
+		if hxecho.IsHtmx(c) {
 			// do something
 			// Adds HTMX headers but does not set the Status Code
-			r, err := echohtmx.Response(c,
+			r, err := hxecho.Response(c,
 				// Continue to use the base htmx types and options
-				htmx.Location("/foo"),
-				htmx.StatusStopPolling,
+				hx.Location("/foo"),
+				hx.StatusStopPolling,
 			)
 			if err != nil {
 				return err
@@ -332,11 +340,12 @@ func main() {
 ```
 
 You will find request and response helpers for the following frameworks:
-- Echo: [echohtmx](./echohtmx)
-- Fiber: [fiberhtmx](./fiberhtmx)
-- Gin: [ginhtmx](./ginhtmx)
+- Echo: [hxecho](./hxecho)
+- Fiber: [hxfiber](./hxfiber)
+- Gin: [hxgin](./hxgin)
 
-The `BuildResponse` will return a default status of 200 if no status is set. If you need to set a status code, you can use the `Status` option.
+The `Response` function for each library will return a default status of 200 if no status is set.
+If you need to set a status code, you can use the `Status` option.
 
 ### Contributions
 Contributions are welcome! Please open an issue or submit a pull request. If at all possible, please provide an example with your bug reports and tests with your pull requests.
